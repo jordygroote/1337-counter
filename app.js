@@ -9,11 +9,13 @@ app.get('/', function(request, response) {
 });
 
 
-var time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+var time;
 
 setInterval(function() {
 
-    time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    timeclock = new Date();
+    time = timeclock.getHours() + ':' + timeclock.getMinutes();
+
     io.sockets.emit('timer', {
         time : time
     });
