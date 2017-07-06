@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <title>Is het al 1337?</title>
+</head>
+<body>
+    <div class="container">
+        <div id="time">
+
+        </div>
+        <div class="isleet">
+            <h1 style="text-align: center">HAPPY LEET</h1>
+            <img width="800" height="500" class="this-img" src="#" alt="">
+        </div>
+    </div>
+</body>
+<style>
+    #time {
+        text-align: center;
+        font-size:50px;
+    }
+
+    .isleet{
+        display: none;
+    }
+
+    #this-img {
+        display: block;
+        margin:0px auto;
+    }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+<script
+        src="https://code.jquery.com/jquery-3.2.1.js"
+        integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+        crossorigin="anonymous"></script>
+<script>
+    var socket = io();
+
+    $(document).ready(function() {
+
+        var gifs = [
+            'http://media1.giphy.com/media/CkkVulYzFjd72/giphy.gif',
+            'https://media.giphy.com/media/10nhMCQ0YoOI3C/giphy.gif',
+            'http://www.reactiongifs.com/wp-content/gallery/dance-party/pagent_dance.gif',
+            'https://media.giphy.com/media/vg5ttW2Fx35zq/giphy.gif',
+            'http://www.gifbin.com/bin/052010/1272965532_nigerian-kid-dance.gif'
+        ];
+
+        var colors = [
+            'blue',
+            'red',
+            'yellow',
+            'green',
+            'black'
+        ];
+
+        var gifCounter = 0;
+        var gifArr = gifs.length;
+
+        var colorCounter = 0;
+        var colorArr = colors.length;
+
+        socket.on('timer', function (data) {
+            if(gifCounter >= gifArr) {
+                gifCounter = -1;
+            }
+
+            if(colorCounter >= colorArr) {
+                colorCounter = -1;
+            }
+
+            $('#counter').html(data.countdown);
+            $('#time').html(data.time);
+
+
+            if(data.time == "13:37") {
+                $('.isleet').css('display','block');
+                $('.this-img').attr('src',gifs[gifCounter]);
+                $('body').css('background-color', colors[colorCounter]);
+            }
+
+            if(data.time != "13:37") {
+                $('.isleet').css('display','none');
+                $('body').css('background-color','white');
+            }
+
+            gifCounter++;
+            colorCounter++;
+        });
+
+    });
+
+
+</script>
+</html>
